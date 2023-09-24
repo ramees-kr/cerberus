@@ -1,3 +1,16 @@
+##################################################################
+# File name: model.py
+# Date: Sep 24, 2023
+# Author: Irina Nazarova
+# Description: this file creates a machine learning model as a member variable
+#               of a class Prediction. First, the given dataset is fed to the 
+#                model to learn using logistic regression. 
+#               Then, it is tested. There is also a method to 
+#               check wether given url is benign or not
+#################################################################
+
+
+
 import pandas as pd
 import numpy as np
 from urllib.parse import urlparse
