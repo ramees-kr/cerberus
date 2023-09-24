@@ -1,14 +1,11 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>URL Blocking Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="styling.css">
+    <link rel="stylesheet" type="text/css" href="static/styling.css">
 </head>
 <body>
-<head>
-    <title>Website with Navigation Bar</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
 <body>
     <header>
         <nav>
@@ -40,16 +37,37 @@
                 </tr>
             </thead>
             <tbody id="url-table-body">
-                <!-- Dynamically added here -->
+                {% for url in urlList %}
+                <tr>
+                    <td>{{ url.url }}</td>
+                    <td><a href="/change/{{url.url}}" 
+                        {% if url.isMalicious : %}
+                        class="status-toggle blocked"
+                        {% else %}
+                        class="status-toggle unblocked"
+                        {% endif %}>{{ url.isMalicious }}</a></td>
+                </tr>
+                {% endfor %}
               </tbody>
         </table>
         <br><br>
         <b>Numbers of websites blocked: </b><span id="num-blocked">#</span>
+        {% for url in urlList %}
+        <p>{{ url.url }}</p>
+        <p><a href="/change/{{url.url}}" 
+            {% if url.isMalicious : %}
+            class="status-toggle blocked"
+            {% else %}
+            class="status-toggle unblocked"
+            {% endif %}>{{ url.isMalicious }}</a></p>
+    {% endfor %}
+
         </div>
       </section>
-        
-
-    <script src="app.js"></script>
+    <script>
+        data=JSON.parse("{{urlList}}")
+    </script>
+    <script src="static/app.js"></script>
 
     
 </body>
