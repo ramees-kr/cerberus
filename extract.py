@@ -1,7 +1,7 @@
 from scapy.all import DNS, DNSQR, sniff
 
 def extract_domain_name(pkt):
-    if DNS in pkt and pkt[DNS].qr == 0:  # if the captured packet is a DNS query, the qr=0
+    if DNS in pkt and pkt[DNS].qr == 0:  # if the captured packet is a DNS query, the qr bit=0
         qname = pkt[DNSQR].qname.decode()  # Extract the query name (domain) and decode it from bytes to a string
         print(f"DNS Query for: {qname}")
 
