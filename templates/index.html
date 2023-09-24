@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>URL Blocking Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="styling.css">
+    <link rel="stylesheet" type="text/css" href="static/styling.css">
 </head>
 <body>
 <body>
@@ -20,14 +20,6 @@
     </header> 
     <section class="centered-section">
         <h1>Main Dashboard</h1>
-        <div class="search">
-            <input type="text" id="search-input" placeholder="Search URLs">
-            <select id="status-filter">
-              <option value="all">All</option>
-              <option value="blocked">Blocked</option>
-              <option value="unblocked">Unblocked</option>
-            </select>
-        </div>
         <div class="content">
         <table id="url-table">
             <thead>
@@ -50,24 +42,8 @@
                 {% endfor %}
               </tbody>
         </table>
-        <br><br>
-        <b>Numbers of websites blocked: </b><span id="num-blocked">#</span>
-        {% for url in urlList %}
-        <p>{{ url.url }}</p>
-        <p><a href="/change/{{url.url}}" 
-            {% if url.isMalicious : %}
-            class="status-toggle blocked"
-            {% else %}
-            class="status-toggle unblocked"
-            {% endif %}>{{ url.isMalicious }}</a></p>
-    {% endfor %}
-
         </div>
       </section>
-    <script>
-        data=JSON.parse("{{urlList}}")
-    </script>
-    <script src="static/app.js"></script>
 
     
 </body>

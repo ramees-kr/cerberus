@@ -2,7 +2,6 @@
 #imports
 import json
 import flask
-from model import Prediction
 
 #import socketIO to use flask and scapy at the same time
 from flask_socketio import SocketIO, send
@@ -10,40 +9,37 @@ from flask_socketio import SocketIO, send
 #import scapy to receive and read DNS packets
 import scapy.all as scapy
 
+from model import Prediction
+
 #import additional scapy objects
-from scapy.all import DNS, DNSQR
+from scapy.all import DNS, DNSQR, sniff
 
 class Domain:
     def __init__(self,url,isMalicious) -> None:
         self.url = url
         self.isMalicious = isMalicious
     
-    def serialize():
-        return {"Domain": {'url':self.url,
-                           'isMalicious':self.isMalicious}}
     
 def findByURL(urlList,searchUrl):
         for url in urlList:
             if url.url == searchUrl:
-                #todo: replace this
-                print("found it")
                 return url
+            
 
-
-
+#initiate a list that will store all the domains checked by scapy on it
 domainList = []
-#start flask
+
+#start flask for the dashboard
 SERVER = flask.Flask(__name__)
-#start socketIO
+
+#start socketIO for using scapy and flask at the same time
 socketIO = SocketIO(SERVER)
 
 #create the routes
+
+#set the root route
 @SERVER.route('/')
 def index():
-    our_model = Prediction()
-    
-    
-    
     #send data in the json format to the view to be read and displayed by javascript
     return flask.render_template("index.html",urlList=domainList)
 
@@ -56,8 +52,7 @@ def change_url(url):
     if domain is None:
         #if domain is null redirect to an error page
         return flask.render_template("error.html", message="Unable to find domain in list")
-    else:
-        #todo: finish implementing json serialization
+    else: 
         domainList[domainList.index(domain)].isMalicious = not domainList[domainList.index(domain)].isMalicious
         return flask.redirect('/')
 
@@ -67,18 +62,21 @@ def change_url(url):
 def extract_domain_name(pkt):
     if DNS in pkt and pkt[DNS].qr == 0:  # if the captured packet is a DNS query, the qr bit=0
         qname = pkt[DNSQR].qname.decode()  # Extract the query name (domain) and decode it from bytes to a string
-        print(f"DNS Query for: {qname}")
+        
                 
         #make sure the domain has not already been checked
         if findByURL(domainList,qname) is None:
             #TODO: implement AI model filtering
-            domainList.append(Domain(qname,False))
+            prediction = our_model.classify_website(str(qname))
+            print(f"DNS Query for: {qname}, {not prediction}")
+            domainList.append(Domain(qname,not prediction))
         else:
             #if the domain has already been checked use the boolean stored in domainList to know if it should
             # be blocked or not
             domain = findByURL(domainList,qname)
             if domain.isMalicious:
                 #todo: find a way to drop packets here
+                print("bad domain!")
 
             
 
@@ -86,13 +84,13 @@ def extract_domain_name(pkt):
 
 #run the app
 if __name__ == '__main__':
+    our_model = Prediction()
     SERVER.debug = True
-    socketIO.start_background_task(scapy.sniff,prn=extract_domain_name)
-    socketIO.run(SERVER)
     # Sniff DNS packets on the network interface (e.g., 'eth0') and call extract_domain_name for each packet
-    sniff(filter="udp and port 53", prn=extract_domain_name)
+    socketIO.start_background_task(scapy.sniff,prn=extract_domain_name)
 
-    
+    #run the server to support the dashboard
+    socketIO.run(SERVER)
 
 
 
