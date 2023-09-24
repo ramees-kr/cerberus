@@ -24,7 +24,6 @@ def findByURL(urlList,searchUrl):
         for url in urlList:
             if url.url == searchUrl:
                 return url
-            
 
 #initiate a list that will store all the domains checked by scapy on it
 domainList = []
@@ -66,17 +65,15 @@ def extract_domain_name(pkt):
                 
         #make sure the domain has not already been checked
         if findByURL(domainList,qname) is None:
-            #TODO: implement AI model filtering
             prediction = our_model.classify_website(str(qname))
-            print(f"DNS Query for: {qname}, {not prediction}")
             domainList.append(Domain(qname,not prediction))
         else:
             #if the domain has already been checked use the boolean stored in domainList to know if it should
             # be blocked or not
             domain = findByURL(domainList,qname)
             if domain.isMalicious:
-                #todo: find a way to drop packets here
-                print("bad domain!")
+                #todo: implement blocking
+                print("bad domain")
 
             
 

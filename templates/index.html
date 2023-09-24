@@ -10,16 +10,24 @@
     <header>
         <nav>
             <div class="logo">
-                <h1>Bell</h1>
+                <h1>Cerberus Dashboard</h1>
             </div>
             <div class="contact-info">
-                <p>📞 (888) 466-2453</p>
-                <p>✉️ info@bell.com</p>
+                <p>📞 </p>
+                <p>✉️ </p>
             </div>
         </nav>
     </header> 
     <section class="centered-section">
         <h1>Main Dashboard</h1>
+        <div class="search">
+            <input type="text" id="search-input" placeholder="Search URLs">
+            <select id="status-filter">
+              <option value="all">All</option>
+              <option value="blocked">Blocked</option>
+              <option value="unblocked">Unblocked</option>
+            </select>
+        </div>
         <div class="content">
         <table id="url-table">
             <thead>
@@ -42,8 +50,18 @@
                 {% endfor %}
               </tbody>
         </table>
+        <br><br>
+        <b>Numbers of websites blocked: </b><span id="num-blocked">#</span>
         </div>
       </section>
+      <!--
+<script>
+        data=JSON.parse("{{urlList}}")
+    </script>
+    <script src="static/app.js"></script>
+
+      -->
+    
 
     
 </body>
