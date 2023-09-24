@@ -2,6 +2,7 @@
 #imports
 import json
 import flask
+from model import Prediction
 
 #import socketIO to use flask and scapy at the same time
 from flask_socketio import SocketIO, send
@@ -39,6 +40,10 @@ socketIO = SocketIO(SERVER)
 #create the routes
 @SERVER.route('/')
 def index():
+    our_model = Prediction()
+    
+    
+    
     #send data in the json format to the view to be read and displayed by javascript
     return flask.render_template("index.html",urlList=domainList)
 
