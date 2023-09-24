@@ -10,53 +10,44 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <!-- <header>
+    <header>
         <nav>
             <div class="logo">
                 <h1>Bell</h1>
             </div>
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
             <div class="contact-info">
-                <p>Phone: 123-456-7890</p>
-                <p>Email: info@bell.com</p>
+                <p>📞 (888) 466-2453</p>
+                <p>✉️ info@bell.com</p>
             </div>
         </nav>
-    </header> --> -->
-    <h1>Main Dashboard</h1>
-    <table id="url-table">
-        <thead>
-            <tr>
-                <th class="url">URL</th>
-                <th class="status">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>blablabla.com</td>
-                <td>
-                    <button class="status-toggle unblocked">Unblocked</button>
-                </td>
-            </tr>
-            <tr>
-                <td>blablabla.com</td>
-                <td>
-                    <button class="status-toggle blocked">Blocked</button>
-                </td>
-            </tr>
-            <tr>
-                <td>blablabla.com</td>
-                <td>
-                    <button class="status-toggle unblocked">Unblocked</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <b>Numbers of websites blocked:</b><span id="num-blocked">#</span>
+    </header> 
+    <section class="centered-section">
+        <h1>Main Dashboard</h1>
+        <div class="search">
+            <input type="text" id="search-input" placeholder="Search URLs">
+            <select id="status-filter">
+              <option value="all">All</option>
+              <option value="blocked">Blocked</option>
+              <option value="unblocked">Unblocked</option>
+            </select>
+        </div>
+        <div class="content">
+        <table id="url-table">
+            <thead>
+                <tr>
+                    <th class="url">URL</th>
+                    <th class="status">Status</th>
+                </tr>
+            </thead>
+            <tbody id="url-table-body">
+                <!-- Dynamically added here -->
+              </tbody>
+        </table>
+        <br><br>
+        <b>Numbers of websites blocked: </b><span id="num-blocked">#</span>
+        </div>
+      </section>
+        
 
     <script src="app.js"></script>
 
